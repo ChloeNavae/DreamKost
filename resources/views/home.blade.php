@@ -1,4 +1,5 @@
 <x-layout>
     <h3>Home</h3>
-    {{ $nama }}
+    {{ Auth::check()==false ? 'Guess' : Auth::user()->name }}
+    
 </x-layout>

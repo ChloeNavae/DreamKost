@@ -36,19 +36,28 @@
                             class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
                             role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                             tabindex="-1">
-                            <!-- Active: "bg-gray-100 outline-none", Not Active: "" -->
-                            {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                tabindex="-1" id="user-menu-item-1">Settings</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                tabindex="-1" id="user-menu-item-2">Sign out</a> --}}
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 outline-none"
-                                role="menuitem" tabindex="-1" id="user-menu-item-0">Masuk</a>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 outline-none"
-                                role="menuitem" tabindex="-1" id="user-menu-item-0">Daftar</a>
+                            @auth
+                                @if (Auth::user()->is_admin == 1)
+                                    <a href="/dashboard"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 outline-none"
+                                        role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                                @endif
+                                <form id="logout-form" action="{{ route('logout') }}" method="GET" class="d-none">
+                                    @csrf
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 outline-none"
+                                        role="menuitem" tabindex="-1" id="user-menu-item-0">Keluar</a>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 outline-none"
+                                    role="menuitem" tabindex="-1" id="user-menu-item-0">Masuk</a>
+                                <a href="{{ route('register') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 outline-none"
+                                    role="menuitem" tabindex="-1" id="user-menu-item-0">Daftar</a>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -104,23 +113,30 @@
                     <img class="size-10 rounded-full" src="/img/guessprofile.png" alt="">
                 </div>
                 <div class="ml-3">
-                    <div class="text-base/5 font-medium text-white">Tom Cook</div>
-                    <div class="text-sm font-medium text-gray-400">tom@example.com</div>
+                    <div class="text-base/5 font-medium text-white">
+                        {{ Auth::check() == false ? 'Guess' : Auth::user()->name }}</div>
                 </div>
             </div>
             <div class="mt-3 space-y-1 px-2">
-                {{-- <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your
-                    Profile</a>
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign
-                    out</a> --}}
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Masuk</a>
-                <a href="#"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Daftar</a>
+                @auth
+                    @if (Auth::user()->is_admin == 1)
+                        <a href="/dashboard"
+                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Dashboard</a>
+                    @endif
+                    <form id="logout-form" action="{{ route('logout') }}" method="GET" class="d-none">
+                        @csrf
+                        <a href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();"
+                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Keluar</a>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Masuk</a>
+                    <a href="{{ route('register') }}"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Daftar</a>
+                @endauth
+
             </div>
         </div>
     </div>
