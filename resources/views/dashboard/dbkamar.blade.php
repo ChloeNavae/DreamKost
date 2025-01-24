@@ -139,7 +139,7 @@
                             {{ $kamar->ended_at }}
                         </td>
                         <td class="px-6 py-4">
-                            <a href="#" class="font-medium  text-blue-500 hover:underline">Edit</a>
+                            <a href="/editkamar" class="font-medium  text-blue-500 hover:underline">Edit</a>
                         </td>
                     </tr>
                 @endforeach

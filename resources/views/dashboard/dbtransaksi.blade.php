@@ -19,9 +19,9 @@
                     <th scope="col" class="px-6 py-3">
                         Total
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    {{-- <th scope="col" class="px-6 py-3">
                         Action
-                    </th>
+                    </th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -43,10 +43,10 @@
                         <td class="px-6 py-4 font-semibold  text-white">
                             Rp {{ $transaksi->durasi * 700000}}
                         </td>
-                        <td class="px-6 py-4">
-                            {{-- <a href="#" class="font-medium text-green-500 hover:underline">Accept</a> --}}
+                        {{-- <td class="px-6 py-4">
+                            <a href="#" class="font-medium text-green-500 hover:underline">Accept</a>
                             <a href="#" class="font-small px-4 text-red-500 hover:underline">Remove</a>
-                        </td>
+                        </td> --}}
                     </tr>
                 @endforeach
             </tbody>

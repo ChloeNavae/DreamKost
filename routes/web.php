@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 use App\Models\Kamar;
 use App\Models\Transaksi;
@@ -42,6 +43,12 @@ Route::get('/dbuser', function () {
 Route::get('/dbkamar', function () {
     return view('dashboard/dbkamar', ['kamar' => Kamar::all()]);
 })->middleware('auth');
+
+Route::get('/editkamar', function(Kamar $kamar) {  // MASIH ERROR
+    return view('dashboard/editkamar', ['users' => User::all(), 'kamar' => Kamar::all()]);
+})->middleware('auth');
+
+Route::put('post-update', [DashboardController::class, 'updateKamar'])->name('kamar.update');
 
 Route::get('/dbtransaksi', function () {
     return view('dashboard/dbtransaksi', ['transaksi' => Transaksi::all()]);

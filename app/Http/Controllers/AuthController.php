@@ -35,6 +35,7 @@ class AuthController extends Controller
 
     public function dbkamar(): View
     {
+        
         return view('dashboard.dbkamar');
     }
 
