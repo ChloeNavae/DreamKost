@@ -28,6 +28,21 @@ class AuthController extends Controller
         return view('dashboard.dashboard');
     }
 
+    public function dbuser(): View
+    {
+        return view('dashboard.dbuser');
+    }
+
+    public function dbkamar(): View
+    {
+        return view('dashboard.dbkamar');
+    }
+
+    public function dbtransaksi(): View
+    {
+        return view('dashboard.dbtransaksi');
+    }
+
     public function postLogin(Request $request): RedirectResponse
     {
         $request->validate([
@@ -47,6 +62,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
+            'phone' => 'required|numeric|min:11',
             'password' => 'required|min:5',
         ]);
 
@@ -63,6 +79,7 @@ class AuthController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password'])
         ]);
     }
