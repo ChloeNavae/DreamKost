@@ -49,9 +49,12 @@ class DashboardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function editKamar(Kamar $kamar)
+    public function editKamar(Kamar $kamar): View
     {
-        return view('dashboard.dbkamar');
+        return view('dashboard.editkamar', [
+            'kamar' => $kamar,
+            'users' => User::all(),
+        ]);
     }
 
     /**
@@ -64,6 +67,7 @@ class DashboardController extends Controller
             'lantai' => 'required|numeric|min:1',
         ]);
 
+        $kamar->no_kamar = $request->no_kamar;
         $kamar->owner_id = $request->owner_id;
         $kamar->lantai = $request->lantai;
         $kamar->started_at = $request->started_at;
@@ -74,9 +78,9 @@ class DashboardController extends Controller
             $kamar->terisi = false;
         };
 
-        $kamar->update();
+        $kamar->save();
           
-        return redirect()->route('dashboard.dbkamar')->withSuccess('Kamar terupdate!');
+        return redirect()->route('dbkamar')->withSuccess('Kamar terupdate!');
     }
 
     /**

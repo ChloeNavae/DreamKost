@@ -1,5 +1,5 @@
 <x-layout>
-    <h3>List Kamar Kosong</h3>
+    <h3 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-xl lg:text-2xl dark:text-white">List Kamar Dream Kost</h3>
     <br>
     <div class="container-fluid relative w-2/6">
         <div class="grid grid-cols-4 gap-4">

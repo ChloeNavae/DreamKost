@@ -7,11 +7,12 @@ use App\Models\Kamar;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('home', ['nama' => 'Leonardo Imanuel']);
+    return view('home');
 });
 
 Route::get('/foto', function () {
@@ -20,21 +21,25 @@ Route::get('/foto', function () {
 
 Route::get('/sewa', function () {
     return view('./sewa', ['kamars' => Kamar::all()]);
-})->middleware('auth');;
+})->middleware('auth');
 
 Route::get('/sewa/{kamar}/pembayaran', function (Kamar $kamar) {
     return view('transaksi', ['kamar' => $kamar]);
-})->middleware('auth');;
+})->middleware('auth');
 
 Route::post('post-pembayaran', [TransactionController::class, 'storeTransaction'])->name('transcation.post'); 
 
 Route::get('/sewa/{kamar}', function (Kamar $kamar) {
     return view('kamar', ['kamar' => $kamar]);
-})->middleware('auth');;
-
-Route::get('/dashboard', function () {
-    return view('dashboard/dashboard');
 })->middleware('auth');
+
+Route::get('/dashboard', [AuthController::class, 'dashboard'])
+    ->name('dashboard')
+    ->middleware('auth');
+
+Route::get('/api/dashboard-stats', [AuthController::class, 'dashboardStats'])
+    ->name('dashboard.stats')
+    ->middleware('auth');
 
 Route::get('/dbuser', function () {
     return view('dashboard/dbuser', ['users' => User::all()]);
@@ -42,13 +47,15 @@ Route::get('/dbuser', function () {
 
 Route::get('/dbkamar', function () {
     return view('dashboard/dbkamar', ['kamar' => Kamar::all()]);
-})->middleware('auth');
+})->name('dbkamar')->middleware('auth');
 
-Route::get('/editkamar', function(Kamar $kamar) {  // MASIH ERROR
-    return view('dashboard/editkamar', ['users' => User::all(), 'kamar' => Kamar::all()]);
-})->middleware('auth');
+Route::get('/editkamar/{kamar}', [DashboardController::class, 'editKamar'])
+    ->name('kamar.edit')
+    ->middleware('auth');
 
-Route::put('post-update', [DashboardController::class, 'updateKamar'])->name('kamar.update');
+Route::put('/kamar/{kamar}', [DashboardController::class, 'updateKamar'])
+    ->name('kamar.update')
+    ->middleware('auth');
 
 Route::get('/dbtransaksi', function () {
     return view('dashboard/dbtransaksi', ['transaksi' => Transaksi::all()]);
@@ -58,5 +65,4 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
 Route::get('registration', [AuthController::class, 'register'])->name('register');
 Route::post('post-registration', [AuthController::class, 'postRegister'])->name('register.post'); 
-Route::get('dashboard', [AuthController::class, 'dashboard']); 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

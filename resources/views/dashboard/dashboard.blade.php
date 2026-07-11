@@ -1,11 +1,12 @@
 <x-dashboard-lay>
-
+    
     <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">
         <div
             class="items-center justify-between p-4  border  rounded-lg shadow-sm sm:flex border-gray-700 sm:p-6 bg-gray-800">
             <div class="w-full">
                 <h3 class="text-base font-normal  text-gray-400">Users</h3>
-                <span class="text-2xl font-bold leading-none  sm:text-3xl text-white">2,340</span>
+                {{-- <span class="text-2xl font-bold leading-none  sm:text-3xl text-white">2,340</span> --}}
+                <span id="stat-users" class="text-2xl font-bold leading-none  sm:text-3xl text-white">{{ number_format($totalUsers) }}</span>
             </div>
             <svg class="w-[48px] h-[48px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                 height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -19,7 +20,8 @@
             class="items-center justify-between p-4  border  rounded-lg shadow-sm sm:flex border-gray-700 sm:p-6 bg-gray-800">
             <div class="w-full">
                 <h3 class="text-base font-normal  text-gray-400">Kamar</h3>
-                <span class="text-2xl font-bold leading-none  sm:text-3xl text-white">2,340</span>
+                {{-- <span class="text-2xl font-bold leading-none  sm:text-3xl text-white">2,340</span> --}}
+                <span id="stat-kamar" class="text-2xl font-bold leading-none  sm:text-3xl text-white">{{ number_format($totalKamar) }}</span>
             </div>
             <svg class="w-[48px] h-[48px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -33,8 +35,8 @@
             class="items-center justify-between p-4  border  rounded-lg shadow-sm sm:flex border-gray-700 sm:p-6 bg-gray-800">
             <div class="w-full">
                 <h3 class="text-base font-normal  text-gray-400">Transaksi</h3>
-                <span class="text-2xl font-bold leading-none  sm:text-3xl text-white">
-                    1
+                <span id="stat-transaksi" class="text-2xl font-bold leading-none  sm:text-3xl text-white">
+                    {{ number_format($totalTransaksi) }}
                 </span>
             </div>
             <svg class="w-[48px] h-[48px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

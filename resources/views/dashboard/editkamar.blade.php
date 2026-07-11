@@ -7,37 +7,41 @@
 
         <hr class="h-px my-8 bg-gray-300 border-0 dark:bg-gray-700">
 
-        <form action="{{ route('kamar.update') }}" class="max-w-sm mx-auto" method="PUT"> {{-- MASIH ERROR --}}
+        <form action="{{ route('kamar.update', $kamar->no_kamar ) }}" class="max-w-sm mx-auto" method="POST"> {{-- MASIH ERROR --}}
             @csrf
+            @method('PUT')
+
             <div class="mb-5">
                 <label for="no_kamar" class="block mb-2 text-sm font-medium text-white">No Kamar</label>
-                <input type="no_kamar" id="no_kamar"
-                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ $kamar }}"/>
+                <input type="text" name="no_kamar" id="no_kamar"
+                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light cursor-not-allowed" readonly value="{{ old('no_kamar', $kamar->no_kamar) }}" required/>
             </div>
             <div class="mb-5">
                 <label for="lantai" class="block mb-2 text-sm font-medium text-white">Lantai</label>
-                <input type="number" id="lantai"
-                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ $kamar }}" required />
+                <input type="number" name="lantai" id="lantai"
+                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light cursor-not-allowed" readonly value="{{ old('lantai', $kamar->lantai) }}" required />
             </div>
             <div class="mb-5">
                 <label for="owner_id" class="block mb-2 text-sm font-medium text-white">Owner</label>
-                <select id="owner_id"
+                <select name="owner_id" id="owner_id"
                     class=" border  text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Tidak Ada</option>
-                    @foreach ($users as $users)
-                        <option value="{{ $users->id }}">{{ $users->name }}</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}" {{ $kamar->owner_id == $user->id ? 'selected' : '' }}>
+                            {{ $user->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
             <div class="mb-5">
                 <label for="started_at" class="block mb-2 text-sm font-medium text-white">Mulai</label>
-                <input type="date" id="started_at"
-                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ $kamar }}"/>
+                <input type="date" name="started_at" id="started_at"
+                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ old('started_at', $kamar->started_at) }}"/>
             </div>
             <div class="mb-5">
                 <label for="ended_at" class="block mb-2 text-sm font-medium text-white">Berakhir</label>
-                <input type="date" id="ended_at"
-                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ $kamar }}"/>
+                <input type="date" name="ended_at" id="ended_at"
+                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ old('ended_at', $kamar->ended_at) }}"/>
             </div>
             <button type="submit"
                 class="text-white   focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Update Kamar</button>

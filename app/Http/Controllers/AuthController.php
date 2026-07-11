@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kamar;
+use App\Models\Transaksi;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +28,20 @@ class AuthController extends Controller
 
     public function dashboard(): View
     {
-        return view('dashboard.dashboard');
+        return view('dashboard.dashboard', [
+            'totalUsers' => User::count(),
+            'totalKamar' => Kamar::count(),
+            'totalTransaksi' => Transaksi::count(),
+        ]);
+    }
+
+    public function dashboardStats(): JsonResponse
+    {
+        return response()->json([
+            'totalUsers' => User::count(),
+            'totalKamar' => Kamar::count(),
+            'totalTransaksi' => Transaksi::count(),
+        ]);
     }
 
     public function dbuser(): View
