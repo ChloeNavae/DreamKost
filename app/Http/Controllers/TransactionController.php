@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,8 +26,23 @@ class TransactionController extends Controller
 
         $transaksi->save();
         return redirect("/")->withSuccess('Sewa Dalam Proses, Silahkan Tunggu.');
+    }
 
-        
+    // Transaksi di Setujui
+    public function accepted(Transaksi $transaksi): RedirectResponse
+    {
+        $transaksi->status = 'accepted';
+        $transaksi->save();
 
+        return back()->withSuccess('Transaksi berhasil disetujui!');
+    }
+
+    // Transaksi di Tolak
+    public function declined(Transaksi $transaksi): RedirectResponse
+    {
+        $transaksi->status = 'declined';
+        $transaksi->save();
+
+        return back()->withSuccess('Transaksi berhasil ditolak!');
     }
 }

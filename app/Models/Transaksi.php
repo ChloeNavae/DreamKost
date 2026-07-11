@@ -13,6 +13,7 @@ class Transaksi extends Model
         'image',
         'no_kamar',
         'durasi',
+        'status',
     ]; //MassAssignment protected
 
     public function owner(): BelongsTo

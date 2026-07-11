@@ -29,6 +29,15 @@ Route::get('/sewa/{kamar}/pembayaran', function (Kamar $kamar) {
 
 Route::post('post-pembayaran', [TransactionController::class, 'storeTransaction'])->name('transcation.post'); 
 
+// Accept / Decline Transaksi
+Route::put('/transaksi/{transaksi}/accepted', [TransactionController::class, 'accepted'])
+    ->name('transaksi.accepted')
+    ->middleware('auth');
+
+Route::put('/transaksi/{transaksi}/declined', [TransactionController::class, 'declined'])
+    ->name('transaksi.declined')
+    ->middleware('auth');
+
 Route::get('/sewa/{kamar}', function (Kamar $kamar) {
     return view('kamar', ['kamar' => $kamar]);
 })->middleware('auth');
@@ -37,6 +46,7 @@ Route::get('/dashboard', [AuthController::class, 'dashboard'])
     ->name('dashboard')
     ->middleware('auth');
 
+// Semi-Real-Time Dashboard Data
 Route::get('/api/dashboard-stats', [AuthController::class, 'dashboardStats'])
     ->name('dashboard.stats')
     ->middleware('auth');
@@ -49,6 +59,7 @@ Route::get('/dbkamar', function () {
     return view('dashboard/dbkamar', ['kamar' => Kamar::all()]);
 })->name('dbkamar')->middleware('auth');
 
+// Edit & Update Kamar Information
 Route::get('/editkamar/{kamar}', [DashboardController::class, 'editKamar'])
     ->name('kamar.edit')
     ->middleware('auth');
