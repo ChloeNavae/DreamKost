@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kamar;
+use App\Models\User;
 use App\Models\Pengumuman;
 use App\Models\Transaksi;
 use Carbon\Carbon;
@@ -65,14 +66,34 @@ class TenantDashboardController extends Controller
     {
         $request->validate([
             'bulan' => 'required|integer|min:1|max:12',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
+ 
         $kamar = Kamar::where('owner_id', Auth::id())->firstOrFail();
-
-        $baseDate = $kamar->ended_at ? Carbon::parse($kamar->ended_at) : now();
-        $kamar->ended_at = $baseDate->addMonths((int) $request->bulan);
-        $kamar->save();
-
-        return back()->withSuccess('Perpanjangan sewa berhasil diajukan!');
+ 
+        // Cegah pengajuan dobel selama masih ada yang pending
+        $adaPending = Transaksi::where('owner_id', Auth::id())
+            ->where('status', 'pending')
+            ->exists();
+        if ($adaPending) {
+            return back()->withError('Kamu masih punya pengajuan yang sedang diproses. Tunggu sampai disetujui/ditolak dulu.');
+        }
+ 
+        // ubah nama img menjadi name_date_time
+        $userName = User::where('id', Auth::id())->value('name');
+        $dateTime = now()->format('d-m-Y_H-i-s');;
+        $imageName = $userName.'_'.$dateTime.'.'.$request->image->extension();
+        $request->image->move(public_path('bukti'), $imageName);
+ 
+        Transaksi::create([
+            'owner_id' => Auth::id(),
+            'image' => 'bukti/'.$imageName,
+            'no_kamar' => $kamar->no_kamar,
+            'durasi' => $request->bulan,
+            'jenis' => 'perpanjangan',
+            'status' => 'pending',
+        ]);
+ 
+        return back()->withSuccess('Pengajuan perpanjangan sewa dikirim, silahkan tunggu persetujuan pemilik kos.');
     }
 }

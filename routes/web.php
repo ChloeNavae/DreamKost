@@ -65,7 +65,7 @@ Route::get('/tendashboard', [TenantDashboardController::class, 'index'])
     ->name('dashboard.tenant')
     ->middleware('auth');
 
-Route::put('/sewa/perpanjang', [TenantDashboardController::class, 'extendSewa'])
+Route::post('/sewa/perpanjang', [TenantDashboardController::class, 'extendSewa'])
     ->name('sewa.perpanjang')
     ->middleware('auth');
 

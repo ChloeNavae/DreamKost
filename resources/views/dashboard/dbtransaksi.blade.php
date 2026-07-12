@@ -11,6 +11,9 @@
                         Owner
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Jenis
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Kamar
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -35,6 +38,9 @@
                         </td>
                         <td class="px-6 py-4 font-semibold text-white">
                             {{ $transaksi->owner->name }}
+                        </td>
+                        <td class="px-6 py-4 font-semibold text-white capitalize">
+                            {{ $transaksi->jenis }}
                         </td>
                         <td class="px-6 py-4 font-semibold text-white">
                             {{ $transaksi->no_kamar }}

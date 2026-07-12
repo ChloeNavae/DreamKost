@@ -6,10 +6,6 @@
         <div class="p-4 border rounded-lg shadow-sm border-gray-700 sm:p-6 bg-gray-800 xl:col-span-1">
             <h3 class="mb-4 text-lg font-semibold text-white">Buat Pengumuman Baru</h3>
 
-            @session('success')
-                <div class="mb-4 p-3 text-sm text-green-200 bg-green-900 rounded-lg">{{ $value }}</div>
-            @endsession
-
             <form action="{{ route('pengumuman.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>

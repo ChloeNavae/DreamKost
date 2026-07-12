@@ -39,10 +39,9 @@
                 </div>
 
                 {{-- Form Perpanjang Sewa --}}
-                <form action="{{ route('sewa.perpanjang') }}" method="POST" class="mt-4 flex items-end gap-2">
+                <form action="{{ route('sewa.perpanjang') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-3">
                     @csrf
-                    @method('PUT')
-                    <div class="flex-1">
+                    <div>
                         <label for="bulan" class="block mb-1 text-sm text-gray-300">Perpanjang (bulan)</label>
                         <select name="bulan" id="bulan"
                             class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 text-white">
@@ -51,10 +50,34 @@
                             @endfor
                         </select>
                     </div>
+                    <!-- Info Rekening (Opsional tapi disarankan) -->
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg dark:bg-gray-900 dark:border-yellow-600">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700 dark:text-yellow-500">
+                                    Silakan transfer ke rekening <strong>BCA 1234567890 a.n Dream Kost</strong> sebesar nominal di atas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="image" class="block mb-1 text-sm text-gray-300">Bukti Transfer</label>
+                        <input type="file" name="image" id="image" accept="image/png, image/jpeg, image/jpg" required
+                            class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 text-white file:mr-3 file:py-1 file:px-2 file:rounded file:border-0 file:bg-blue-600 file:text-white">
+                        @error('image')
+                            <span class="text-sm text-red-400">{{ $message }}</span>
+                        @enderror
+                    </div>
                     <button type="submit"
                         class="text-white font-medium rounded-lg text-sm px-5 py-2.5 bg-blue-600 hover:bg-blue-700">
-                        Perpanjang Sewa
+                        Ajukan Perpanjangan Sewa
                     </button>
+                    <p class="text-xs text-gray-400">Perpanjangan baru berlaku setelah disetujui pemilik kos.</p>
                 </form>
             @else
                 <p class="text-sm text-gray-400">Kamu belum menyewa kamar manapun.</p>
@@ -85,6 +108,7 @@
                     <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                         <tr>
                             <th class="px-6 py-3">Tanggal</th>
+                            <th class="px-6 py-3">Jenis</th>
                             <th class="px-6 py-3">No. Kamar</th>
                             <th class="px-6 py-3">Durasi</th>
                             <th class="px-6 py-3">Bukti Bayar</th>
@@ -95,10 +119,11 @@
                         @forelse ($riwayatTransaksi as $t)
                             <tr class="border-b bg-gray-800 border-gray-700">
                                 <td class="px-6 py-4">{{ $t->created_at->format('d M Y') }}</td>
+                                <td class="px-6 py-4 capitalize">{{ $t->jenis }}</td>
                                 <td class="px-6 py-4">{{ $t->no_kamar }}</td>
                                 <td class="px-6 py-4">{{ $t->durasi }} bulan</td>
                                 <td class="px-6 py-4">
-                                    <a href="{{ asset('storage/' . $t->image) }}" target="_blank" class="text-blue-400 hover:underline">Lihat</a>
+                                    <a href="{{ asset('/' . $t->image) }}" target="_blank" class="text-blue-400 hover:underline">Lihat</a>
                                 </td>
                                 <td class="px-6 py-4 capitalize
                                     {{ $t->status === 'accepted' ? 'text-green-500' : ($t->status === 'declined' ? 'text-red-500' : 'text-yellow-500') }}">
@@ -146,48 +171,6 @@
             </form>
         </div>
 
-    </div>
-
-    {{-- Container fixed untuk Pop Up melayang di pojok kanan atas --}}
-    <div class="fixed top-5 right-5 z-50 flex flex-col gap-3">
-        
-        {{-- Pop Up Berhasil (Success) --}}
-        @session('success')
-            <div id="toast-success" class="flex items-center w-full max-w-xs p-4 text-gray-400 bg-gray-800 border border-gray-700 rounded-lg shadow-lg" role="alert">
-                <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-200 bg-green-900 rounded-lg">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-                    </svg>
-                    <span class="sr-only">Check icon</span>
-                </div>
-                <div class="ms-3 text-sm font-medium">{{ $value }}</div>
-                <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-gray-800 text-gray-400 hover:text-white rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-700 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-success" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                </button>
-            </div>
-        @endsession
-
-        {{-- Pop Up Gagal (Error) --}}
-        @session('error')
-            <div id="toast-danger" class="flex items-center w-full max-w-xs p-4 text-gray-400 bg-gray-800 border border-gray-700 rounded-lg shadow-lg" role="alert">
-                <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-200 bg-red-900 rounded-lg">
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
-                    </svg>
-                    <span class="sr-only">Error icon</span>
-                </div>
-                <div class="ms-3 text-sm font-medium">{{ $value }}</div>
-                <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-gray-800 text-gray-400 hover:text-white rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-700 inline-flex items-center justify-center h-8 w-8" data-dismiss-target="#toast-danger" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                </button>
-            </div>
-        @endsession
     </div>
     
 </x-dashboard-lay>

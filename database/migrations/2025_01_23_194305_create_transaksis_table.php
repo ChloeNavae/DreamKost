@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image');
             $table->integer('no_kamar');
             $table->integer('durasi');
+            $table->enum('jenis', ['sewa', 'perpanjangan'])->default('sewa');
             $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
             $table->timestamps();
         });

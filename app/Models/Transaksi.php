@@ -12,6 +12,7 @@ class Transaksi extends Model
         'image',
         'no_kamar',
         'durasi',
+        'jenis',
         'status',
     ]; //MassAssignment protected
 

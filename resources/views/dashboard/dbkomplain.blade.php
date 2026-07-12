@@ -2,10 +2,6 @@
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
 
-        @session('success')
-            <div class="mb-4 p-3 text-sm text-green-200 bg-green-900 rounded-lg">{{ $value }}</div>
-        @endsession
-
         <table class="w-full text-sm text-left text-gray-400">
             <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                 <tr>
