@@ -38,6 +38,11 @@ Route::put('/transaksi/{transaksi}/declined', [TransactionController::class, 'de
     ->name('transaksi.declined')
     ->middleware('auth');
 
+// Jumlah Transaksi Pending di Sidebar Dashboard
+Route::get('/api/transaksi-pending-count', [TransactionController::class, 'pendingCount'])
+    ->name('transaksi.pending-count')
+    ->middleware('auth');
+
 Route::get('/sewa/{kamar}', function (Kamar $kamar) {
     return view('kamar', ['kamar' => $kamar]);
 })->middleware('auth');

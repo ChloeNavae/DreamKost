@@ -47,4 +47,36 @@
         </div>
     </div>
 
+    <script>
+        // Polling ringan: ambil data terbaru dari /api/dashboard-stats setiap 5 detik,
+        // lalu update angka di halaman tanpa reload.
+        const DASHBOARD_STATS_URL = "{{ route('dashboard.stats') }}";
+        const POLL_INTERVAL_MS = 5000;
+ 
+        async function refreshDashboardStats() {
+            try {
+                const response = await fetch(DASHBOARD_STATS_URL, {
+                    headers: { 'Accept': 'application/json' },
+                });
+ 
+                if (!response.ok) {
+                    console.error('Gagal mengambil dashboard stats:', response.status);
+                    return;
+                }
+ 
+                const data = await response.json();
+ 
+                document.getElementById('stat-users').textContent = new Intl.NumberFormat('id-ID').format(data.totalUsers);
+                document.getElementById('stat-kamar').textContent = new Intl.NumberFormat('id-ID').format(data.totalKamar);
+                document.getElementById('stat-transaksi').textContent = new Intl.NumberFormat('id-ID').format(data.totalTransaksi);
+            } catch (error) {
+                console.error('Error saat fetch dashboard stats:', error);
+            }
+        }
+ 
+        // Jalankan sekali saat halaman dimuat (opsional, karena data awal sudah dari server),
+        // lalu ulangi setiap POLL_INTERVAL_MS.
+        setInterval(refreshDashboardStats, POLL_INTERVAL_MS);
+    </script>
+
 </x-dashboard-lay>

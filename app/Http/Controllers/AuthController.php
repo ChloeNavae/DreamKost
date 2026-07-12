@@ -35,6 +35,7 @@ class AuthController extends Controller
         ]);
     }
 
+    // untuk update jumlah data secara berkala di dashboard.blade.php
     public function dashboardStats(): JsonResponse
     {
         return response()->json([

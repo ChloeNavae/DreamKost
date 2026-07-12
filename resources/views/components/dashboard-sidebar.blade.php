@@ -62,8 +62,7 @@
                                 d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
                         </svg>
                         <span class="flex-1 ms-3 whitespace-nowrap">Transaksi</span>
-                        <span
-                            class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium  rounded-full bg-blue-900 text-blue-300">3</span>
+                        <span id="badge-pending-transaksi" class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium  rounded-full bg-blue-900 text-blue-300">0</span>
                     </a>
                 </li>
                 
@@ -80,3 +79,37 @@
             </ul>
         </div>
     </aside>
+
+    <script>
+        // Polling ringan untuk badge jumlah transaksi pending.
+        // Karena sidebar ini dipakai di semua halaman dashboard, script ini
+        // otomatis aktif di halaman manapun (dashboard, dbuser, dbkamar, dbtransaksi).
+        const PENDING_COUNT_URL = "{{ route('transaksi.pending-count') }}";
+        const PENDING_POLL_INTERVAL_MS = 5000;
+
+        async function refreshPendingBadge() {
+            try {
+                const response = await fetch(PENDING_COUNT_URL, {
+                    headers: { 'Accept': 'application/json' },
+                });
+
+                if (!response.ok) {
+                    console.error('Gagal mengambil pending count:', response.status);
+                    return;
+                }
+
+                const data = await response.json();
+                const badge = document.getElementById('badge-pending-transaksi');
+
+                badge.textContent = data.pending;
+
+                // hide badge kalau gada transaksi yang berstatus pending
+                badge.style.display = data.pending > 0 ? 'inline-flex' : 'none';
+            } catch (error) {
+                console.error('Error saat fetch pending count:', error);
+            }
+        }
+
+        refreshPendingBadge(); // jalankan sekali saat halaman dimuat
+        setInterval(refreshPendingBadge, PENDING_POLL_INTERVAL_MS);
+    </script>

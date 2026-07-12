@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,5 +45,13 @@ class TransactionController extends Controller
         $transaksi->save();
 
         return back()->withSuccess('Transaksi berhasil ditolak!');
+    }
+
+    // Count Transaksi Pending
+    public function pendingCount(): JsonResponse
+    {
+        return response()->json([
+            'pending' => Transaksi::where('status', 'pending')->count(),
+        ]);
     }
 }
