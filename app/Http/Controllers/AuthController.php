@@ -10,7 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
+// use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
@@ -26,8 +26,14 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function dashboard(): View
+    public function dashboard(): View|RedirectResponse 
     {
+        // Penghuni (is_admin = false) diarahkan ke dashboard khusus penghuni.
+        // Pemilik kos (is_admin = true) tetap lihat dashboard admin ini.
+        if (! Auth::user()->is_admin) {
+            return redirect()->route('dashboard.tenant');
+        }
+
         return view('dashboard.dashboard', [
             'totalUsers' => User::count(),
             'totalKamar' => Kamar::count(),

@@ -37,11 +37,9 @@
                             role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                             tabindex="-1">
                             @auth
-                                @if (Auth::user()->is_admin == 1)
-                                    <a href="/dashboard"
+                                <a href="/dashboard"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 outline-none"
                                         role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
-                                @endif
                                 <form id="logout-form" action="{{ route('logout') }}" method="GET" class="d-none">
                                     @csrf
                                     <a href="{{ route('logout') }}"
@@ -119,10 +117,8 @@
             </div>
             <div class="mt-3 space-y-1 px-2">
                 @auth
-                    @if (Auth::user()->is_admin == 1)
-                        <a href="/dashboard"
-                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Dashboard</a>
-                    @endif
+                    <a href="/dashboard"
+                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Dashboard</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="GET" class="d-none">
                         @csrf
                         <a href="{{ route('logout') }}"

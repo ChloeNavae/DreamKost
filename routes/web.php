@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KomplainController;
+use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\TenantDashboardController;
 use App\Http\Controllers\TransactionController;
 use App\Models\Kamar;
 use App\Models\Transaksi;
 use App\Models\User;
-use Illuminate\Auth\Events\Login;
+// use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +32,7 @@ Route::get('/sewa/{kamar}/pembayaran', function (Kamar $kamar) {
 
 Route::post('post-pembayaran', [TransactionController::class, 'storeTransaction'])->name('transcation.post'); 
 
-// Accept / Decline Transaksi
+// Pemilik Kos Accept / Decline Transaksi
 Route::put('/transaksi/{transaksi}/accepted', [TransactionController::class, 'accepted'])
     ->name('transaksi.accepted')
     ->middleware('auth');
@@ -47,6 +50,7 @@ Route::get('/sewa/{kamar}', function (Kamar $kamar) {
     return view('kamar', ['kamar' => $kamar]);
 })->middleware('auth');
 
+// Dashboard Pemilik Kos
 Route::get('/dashboard', [AuthController::class, 'dashboard'])
     ->name('dashboard')
     ->middleware('auth');
@@ -54,6 +58,46 @@ Route::get('/dashboard', [AuthController::class, 'dashboard'])
 // Semi-Real-Time Dashboard Data
 Route::get('/api/dashboard-stats', [AuthController::class, 'dashboardStats'])
     ->name('dashboard.stats')
+    ->middleware('auth');
+
+// Dashboard Penghuni Kos
+Route::get('/tendashboard', [TenantDashboardController::class, 'index'])
+    ->name('dashboard.tenant')
+    ->middleware('auth');
+
+Route::put('/sewa/perpanjang', [TenantDashboardController::class, 'extendSewa'])
+    ->name('sewa.perpanjang')
+    ->middleware('auth');
+
+// Komplain
+Route::post('/komplain', [KomplainController::class, 'store'])
+    ->name('komplain.store')
+    ->middleware('auth');
+
+Route::get('/dbkomplain', [KomplainController::class, 'index'])
+    ->name('dbkomplain')
+    ->middleware('auth');
+
+Route::put('/komplain/{komplain}/status', [KomplainController::class, 'updateStatus'])
+    ->name('komplain.updateStatus')
+    ->middleware('auth');
+
+// Jumlah Komplain Pending di Sidebar Dashboard
+Route::get('/api/komplain-pending-count', [KomplainController::class, 'pendingCount'])
+    ->name('komplain.pending-count')
+    ->middleware('auth');
+
+// --- Pengumuman ---
+Route::get('/dbpengumuman', [PengumumanController::class, 'index'])
+    ->name('dbpengumuman')
+    ->middleware('auth');
+
+Route::post('/pengumuman', [PengumumanController::class, 'store'])
+    ->name('pengumuman.store')
+    ->middleware('auth');
+
+Route::delete('/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])
+    ->name('pengumuman.destroy')
     ->middleware('auth');
 
 Route::get('/dbuser', function () {

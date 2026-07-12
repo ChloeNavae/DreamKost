@@ -47,7 +47,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Form Edit Kamar
      */
     public function editKamar(Kamar $kamar): View
     {
@@ -63,20 +63,22 @@ class DashboardController extends Controller
     public function updateKamar(Request $request, Kamar $kamar): RedirectResponse
     {
         $request->validate([
-            'no_kamar' => 'required|numeric',
+            // 'no_kamar' => 'required|numeric',
             'lantai' => 'required|numeric|min:1',
         ]);
 
-        $kamar->no_kamar = $request->no_kamar;
+        // $kamar->no_kamar = $request->no_kamar;
         $kamar->owner_id = $request->owner_id;
         $kamar->lantai = $request->lantai;
         $kamar->started_at = $request->started_at;
         $kamar->ended_at = $request->ended_at;
-        if ($request->owner_id != null) {
-            $kamar->terisi = true;
-        } else {
-            $kamar->terisi = false;
-        };
+        // if ($request->owner_id != null) {
+        //     $kamar->terisi = true;
+        // } else {
+        //     $kamar->terisi = false;
+        // };
+
+        $kamar->terisi = $request->owner_id != null;
 
         $kamar->save();
           

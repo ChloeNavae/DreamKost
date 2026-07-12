@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Http\Request;
 
 class Transaksi extends Model
 {
@@ -18,6 +17,11 @@ class Transaksi extends Model
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function kamar(): BelongsTo
+    {
+        return $this->belongsTo(Kamar::class, 'no_kamar', 'no_kamar');
     }
 }

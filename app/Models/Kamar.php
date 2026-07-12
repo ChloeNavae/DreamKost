@@ -10,7 +10,7 @@ class Kamar extends Model
     protected $primaryKey = 'no_kamar'; // change primaryKey from 'id' to 'no_kamar'
 
     protected $fillable = [
-        'no_kamar',
+        // 'no_kamar',
         'owner_id',
         'lantai',
         'terisi',
