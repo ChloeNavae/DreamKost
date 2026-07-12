@@ -31,8 +31,23 @@ class AuthController extends Controller
         // Penghuni (is_admin = false) diarahkan ke dashboard khusus penghuni.
         // Pemilik kos (is_admin = true) tetap lihat dashboard admin ini.
         if (! Auth::user()->is_admin) {
+            
+            // Cek apakah user (penghuni) sudah memiliki kamar
+            $punyaKamar = Kamar::where('owner_id', Auth::id())->exists();
+
+            // Jika belum punya kamar, arahkan ke halaman /sewa
+            if (!$punyaKamar) {
+                return redirect('/sewa')->withError('Kamu belum memiliki kamar. Silakan sewa terlebih dahulu.'); 
+                // Catatan: withError() bisa diganti/dihapus sesuai setup session flash message Anda
+            }
+
+            // Jika sudah punya kamar, arahkan ke dashboard tenant
             return redirect()->route('dashboard.tenant');
         }
+
+        // if (! Auth::user()->is_admin) {
+        //     return redirect()->route('dashboard.tenant');
+        // }
 
         return view('dashboard.dashboard', [
             'totalUsers' => User::count(),

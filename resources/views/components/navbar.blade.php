@@ -9,8 +9,8 @@
                     <div class="ml-10 flex items-baseline space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
-                        <x-nav-link href="foto" :active="request()->is('foto')">Foto</x-nav-link>
-                        <x-nav-link href="sewa" :active="request()->is('sewa')">Sewa</x-nav-link>
+                        <x-nav-link href="/foto" :active="request()->is('foto')">Foto</x-nav-link>
+                        <x-nav-link href="/sewa" :active="request()->is('sewa')">Sewa</x-nav-link>
 
                     </div>
                 </div>
@@ -68,29 +68,14 @@
                     <span class="absolute -inset-0.5"></span>
                     <span class="sr-only">Open main menu</span>
                     <!-- Menu open: "hidden", Menu closed: "block" -->
-                    <svg :class="{
-                        'hidden': isOn,
-                        'block': !
-                            isOn
-                    }
-                    class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" aria-hidden="true" data-slot="icon" >
-                        <
-                        path stroke-linecap="round" stroke-linejoin="round"
-                    d ="M3.75
-                        6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    <svg :class="{ 'hidden': isOpen, 'block': !isOpen }"
+                        class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.756.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                     <!-- Menu open: "block", Menu closed: "hidden" -->
-                    <svg :class="{
-                        'block': isOn,
-                        'hidden': !
-                            isOn
-                    }
-                    class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" aria-hidden="true" data-slot="icon" >
-                        <
-                        path stroke-linecap="round" stroke-linejoin="round" d ="M6
-                        18 18 6M6 6l12 12" />
+                    <svg :class="{ 'block': isOpen, 'hidden': !isOpen }"
+                        class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" >
+                    <path stroke-linecap="round" stroke-linejoin="round" d ="M6 18 18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>

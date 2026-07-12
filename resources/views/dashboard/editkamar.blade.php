@@ -36,7 +36,7 @@
             <div class="mb-5">
                 <label for="started_at" class="block mb-2 text-sm font-medium text-white">Mulai</label>
                 <input type="date" name="started_at" id="started_at"
-                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ old('started_at', $kamar->started_at) }}"/>
+                    class="shadow-xs  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-xs-light" value="{{ old('started_at', $kamar->started_at) }}" required/>
             </div>
             <div class="mb-5">
                 <label for="ended_at" class="block mb-2 text-sm font-medium text-white">Berakhir</label>

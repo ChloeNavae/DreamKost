@@ -13,9 +13,15 @@ use Illuminate\View\View;
 
 class TenantDashboardController extends Controller
 {
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
         $userId = Auth::id();
+
+        // Cek apakah user punya kamar (menghindari bypass via url)
+        $punyaKamar = Kamar::where('owner_id', $userId)->exists();
+        if (!$punyaKamar) {
+            return redirect('/sewa')->withError('Kamu belum memiliki kamar. Silakan sewa terlebih dahulu.');
+        }
 
         // Cari kamar yang sedang disewa user ini
         $kamar = Kamar::where('owner_id', $userId)->first();

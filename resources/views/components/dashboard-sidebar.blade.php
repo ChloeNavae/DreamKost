@@ -113,88 +113,41 @@
         // Polling ringan untuk badge jumlah transaksi dan komplain pending.
         const PENDING_TRANSAKSI_URL = "{{ route('transaksi.pending-count') }}";
         const PENDING_KOMPLAIN_URL = "{{ route('komplain.pending-count') }}"; 
+        // interval refresh bedge
         const PENDING_POLL_INTERVAL_MS = 5000;
 
-        // async function refreshPendingBadge() {
-        //     try {
-        //         const response = await fetch(PENDING_COUNT_URL, {
-        //             headers: { 'Accept': 'application/json' },
-        //         });
-
-        //         if (!response.ok) {
-        //             console.error('Gagal mengambil pending count:', response.status);
-        //             return;
-        //         }
-
-        //         const data = await response.json();
-        //         const badge = document.getElementById('badge-pending-transaksi');
-
-        //         badge.textContent = data.pending;
-
-        //         // hide badge kalau gada transaksi yang berstatus pending
-        //         badge.style.display = data.pending > 0 ? 'inline-flex' : 'none';
-        //     } catch (error) {
-        //         console.error('Error saat fetch pending count:', error);
-        //     }
-        // }
-
-        // Fungsi fetch untuk Transaksi
-        async function refreshPendingTransaksiBadge() {
+        async function refreshPendingBadge(url, elementId) {
             try {
-                const response = await fetch(PENDING_TRANSAKSI_URL, {
+                const response = await fetch(url, {
                     headers: { 'Accept': 'application/json' },
                 });
 
                 if (!response.ok) {
-                    console.error('Gagal mengambil pending transaksi count:', response.status);
+                    console.error('Gagal mengambil pending count dari', url, response.status);
                     return;
                 }
 
                 const data = await response.json();
-                const badge = document.getElementById('badge-pending-transaksi');
+                const badge = document.getElementById(elementId);
 
-                if (badge) {
-                    badge.textContent = data.pending;
-                    badge.style.display = data.pending > 0 ? 'inline-flex' : 'none';
-                }
+                if (!badge) return;
+
+                badge.textContent = data.pending;
+
+                // hide badge kalau tidak ada yang pending
+                badge.style.display = data.pending > 0 ? 'inline-flex' : 'none';
             } catch (error) {
-                console.error('Error saat fetch pending transaksi count:', error);
+                console.error('Error saat fetch pending count:', error);
             }
         }
 
-        // Fungsi fetch untuk Komplain
-        async function refreshPendingKomplainBadge() {
-            try {
-                const response = await fetch(PENDING_KOMPLAIN_URL, {
-                    headers: { 'Accept': 'application/json' },
-                });
-
-                if (!response.ok) {
-                    console.error('Gagal mengambil pending komplain count:', response.status);
-                    return;
-                }
-
-                const data = await response.json();
-                const badge = document.getElementById('badge-pending-komplain');
-
-                if (badge) {
-                    badge.textContent = data.pending;
-                    badge.style.display = data.pending > 0 ? 'inline-flex' : 'none';
-                }
-            } catch (error) {
-                console.error('Error saat fetch pending komplain count:', error);
-            }
+        // refrest badge setiap waktu yang di tentukan
+        function refreshAllBadges() {
+            refreshPendingBadge(PENDING_TRANSAKSI_URL, 'badge-pending-transaksi');
+            refreshPendingBadge(PENDING_KOMPLAIN_URL, 'badge-pending-komplain');
         }
 
         // jalankan sekali saat halaman dimuat
-        //refreshPendingBadge(); 
-        refreshPendingTransaksiBadge();
-        refreshPendingKomplainBadge();
-
-        // jalankan berkala
-        // setInterval(refreshPendingBadge, PENDING_POLL_INTERVAL_MS);
-        setInterval(() => {
-            refreshPendingTransaksiBadge();
-            refreshPendingKomplainBadge();
-        }, PENDING_POLL_INTERVAL_MS);
+        refreshAllBadges(); 
+        setInterval(refreshAllBadges, PENDING_POLL_INTERVAL_MS);
     </script>

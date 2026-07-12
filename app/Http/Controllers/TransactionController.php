@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kamar;
 use App\Models\Transaksi;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,10 +34,27 @@ class TransactionController extends Controller
     // Transaksi di Setujui
     public function accepted(Transaksi $transaksi): RedirectResponse
     {
+        $kamar = Kamar::find($transaksi->no_kamar);
+
+        if (! $kamar) {
+            return back()->withError('Kamar untuk transaksi ini tidak ditemukan.');
+        }
+
+        // Mencegah kamar yang sudah di tempati di isi ulang oleh penghuni lain
+        if ($kamar->terisi && $kamar->owner_id !== $transaksi->owner_id) {
+            return back()->withError('Kamar ini sudah terisi oleh penghuni lain. Tolak transaksi ini atau pindahkan penghuni sebelumnya terlebih dahulu.');
+        }
+
         $transaksi->status = 'accepted';
         $transaksi->save();
 
-        return back()->withSuccess('Transaksi berhasil disetujui!');
+        $kamar->owner_id = $transaksi->owner_id;
+        $kamar->started_at = now();
+        $kamar->ended_at = now()->addMonths((int) $transaksi->durasi);
+        $kamar->terisi = true;
+        $kamar->save();
+
+        return back()->withSuccess('Transaksi disetujui, user berhasil di-assign ke kamar!');
     }
 
     // Transaksi di Tolak
