@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('owner_id')->constrained(
                 table: 'users',
                 indexName: 'kamar_owner_id'
-            );
+            )->cascadeOnDelete();
             $table->string('image');
             $table->integer('no_kamar');
             $table->integer('durasi');

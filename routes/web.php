@@ -6,6 +6,7 @@ use App\Http\Controllers\KomplainController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\TenantDashboardController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use App\Models\Kamar;
 use App\Models\Transaksi;
 use App\Models\User;
@@ -87,6 +88,11 @@ Route::get('/api/komplain-pending-count', [KomplainController::class, 'pendingCo
     ->name('komplain.pending-count')
     ->middleware('auth');
 
+// Delete Komplain
+Route::delete('/dbkomplain', [KomplainController::class, 'destroySelected'])
+    ->name('komplain.destroySelected')
+    ->middleware('auth');
+
 // --- Pengumuman ---
 Route::get('/dbpengumuman', [PengumumanController::class, 'index'])
     ->name('dbpengumuman')
@@ -102,7 +108,20 @@ Route::delete('/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy
 
 Route::get('/dbuser', function () {
     return view('dashboard/dbuser', ['users' => User::all()]);
-})->middleware('auth');
+})->name('dbuser')->middleware('auth');
+
+// Edit & Update & Delete User
+Route::get('/dbuser/{user}/edit', [UserController::class, 'edit'])
+    ->name('user.edit')
+    ->middleware('auth');
+ 
+Route::put('/dbuser/{user}', [UserController::class, 'update'])
+    ->name('user.update')
+    ->middleware('auth');
+ 
+Route::delete('/dbuser', [UserController::class, 'destroySelected'])
+    ->name('user.destroySelected')
+    ->middleware('auth');
 
 Route::get('/dbkamar', function () {
     return view('dashboard/dbkamar', ['kamar' => Kamar::all()]);

@@ -29,9 +29,7 @@ class KomplainController extends Controller
         return back()->withSuccess('Komplain berhasil dikirim ke pemilik kos!');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan Komplain Penghuni
     public function index(): View
     {
         return view('dashboard.dbkomplain', [
@@ -39,9 +37,7 @@ class KomplainController extends Controller
         ]);
     }
 
-    /**
-     * Pemilik kos update status komplain (pending -> diproses -> selesai).
-     */
+    // Pemilik kos update status komplain
     public function updateStatus(Request $request, Komplain $komplain): RedirectResponse
     {
         $request->validate([
@@ -60,5 +56,20 @@ class KomplainController extends Controller
         return response()->json([
             'pending' => Komplain::where('status', 'pending')->count(),
         ]);
+    }
+
+    // Delete Komplain
+    public function destroySelected(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'komplain_ids' => 'required|array|min:1',
+            'komplain_ids.*' => 'exists:komplains,id',
+        ], [
+            'komplain_ids.required' => 'Pilih minimal 1 komplain untuk dihapus.',
+        ]);
+ 
+        Komplain::whereIn('id', $request->komplain_ids)->delete();
+ 
+        return back()->withSuccess('Komplain terpilih berhasil dihapus!');
     }
 }

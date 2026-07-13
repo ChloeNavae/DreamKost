@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('owner_id')->constrained(
                 table: 'users'
-            )->comment('penghuni yang mengajukan komplain');
+            )->cascadeOnDelete()->comment('penghuni yang mengajukan komplain');
             $table->string('judul');
             $table->text('isi');
             $table->enum('status', ['pending', 'diproses', 'selesai'])->default('pending');

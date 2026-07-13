@@ -44,7 +44,7 @@
                     <div>
                         <label for="bulan" class="block mb-1 text-sm text-gray-300">Perpanjang (bulan)</label>
                         <select name="bulan" id="bulan"
-                            class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 text-white">
+                            class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 text-white" oninput="calculateTotal()">
                             @for ($i = 1; $i <= 12; $i++)
                                 <option value="{{ $i }}">{{ $i }} bulan</option>
                             @endfor
@@ -59,10 +59,12 @@
                                 </svg>
                             </div>
                             <div class="ml-3">
-                                <p class="text-sm text-yellow-700 dark:text-yellow-500">
-                                    Silakan transfer ke rekening <strong>BCA 1234567890 a.n Dream Kost</strong> sebesar nominal di atas.
+                                <p class="text-xs text-yellow-700 dark:text-yellow-500">
+                                    Silakan transfer ke rekening <strong>BCA 1234567890 a.n Dream Kost</strong> sebesar <span id="displayArea" class="font-bold">Rp 0</span>
                                 </p>
                             </div>
+                            <!-- Hidden input to store total if needed by backend -->
+                            <input type="hidden" name="total_harga" id="total_harga" value="0">
                         </div>
                     </div>
                     <div>
@@ -173,4 +175,26 @@
 
     </div>
     
+    <!-- Script Kalkulasi Otomatis -->
+    <script>
+        function calculateTotal() {
+            const hargaPerBulan = 700000; // Harga sewa per bulan
+            const durationInput = document.getElementById('bulan').value;
+            const displayArea = document.getElementById('displayArea');
+            const totalHargaInput = document.getElementById('total_harga');
+
+            if (durationInput && durationInput > 0) {
+                const total = parseInt(durationInput) * hargaPerBulan;
+                // Format ke Rupiah
+                const formattedResult = new Intl.NumberFormat('id-ID').format(total);
+                
+                displayArea.textContent = `Rp ${formattedResult}`;
+                totalHargaInput.value = total; // Simpan nilai murni (angka) ke input hidden jika diperlukan backend
+            } else {
+                displayArea.textContent = "Rp 0";
+                totalHargaInput.value = 0;
+            }
+        }
+    </script>
+
 </x-dashboard-lay>

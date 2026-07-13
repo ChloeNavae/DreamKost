@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('owner_id')->nullable(true)->constrained(
                 table: 'users',
                 indexName: 'kamar_owner_id'
-            );
+            )->cascadeOnDelete();
             $table->integer('lantai');
             $table->boolean('terisi')->default(false);
             $table->date('started_at')->nullable(true);

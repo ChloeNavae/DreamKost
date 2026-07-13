@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('owner_id')->constrained(
                 table: 'users'
-            )->comment('pemilik kos yang membuat pengumuman');
+            )->cascadeOnDelete()->comment('pemilik kos yang membuat pengumuman');
             $table->string('judul');
             $table->text('isi');
             $table->timestamps();
