@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KomplainController;
 use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\TenantDashboardController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -139,6 +140,11 @@ Route::put('/kamar/{kamar}', [DashboardController::class, 'updateKamar'])
 Route::get('/dbtransaksi', function () {
     return view('dashboard/dbtransaksi', ['transaksi' => Transaksi::all()]);
 })->middleware('auth');
+
+// Push Notification PWA
+Route::post('/push/subscribe', [PushSubscriptionController::class, 'store'])
+    ->name('push.subscribe')
+    ->middleware('auth');
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
