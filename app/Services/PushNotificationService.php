@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\PushSubscription;
+use App\Models\User;
 use Minishlink\WebPush\Subscription;
 use Minishlink\WebPush\WebPush;
 
@@ -35,6 +36,19 @@ class PushNotificationService
     public function sendToUser(int $userId, string $title, string $body, string $url = '/'): void
     {
         $subscriptions = PushSubscription::where('user_id', $userId)->get();
+        $this->sendToSubscriptions($subscriptions, $title, $body, $url);
+    }
+
+    /**
+     * Kirim notifikasi ke SEMUA pemilik kos (is_admin = true).
+     * Dipakai untuk notif transaksi baru / komplain baru masuk.
+     */
+    public function sendToAdmins(string $title, string $body, string $url = '/'): void
+    {
+        $adminIds = User::where('is_admin', true)->pluck('id');
+ 
+        $subscriptions = PushSubscription::whereIn('user_id', $adminIds)->get();
+ 
         $this->sendToSubscriptions($subscriptions, $title, $body, $url);
     }
 

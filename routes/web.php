@@ -139,7 +139,7 @@ Route::put('/kamar/{kamar}', [DashboardController::class, 'updateKamar'])
 
 Route::get('/dbtransaksi', function () {
     return view('dashboard/dbtransaksi', ['transaksi' => Transaksi::all()]);
-})->middleware('auth');
+})->name('dbtransaksi')->middleware('auth');
 
 // Push Notification PWA
 Route::post('/push/subscribe', [PushSubscriptionController::class, 'store'])

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Komplain;
+use App\Services\PushNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Illuminate\View\View;
 class KomplainController extends Controller
 {
     // Penghuni mengirim komplain baru
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, PushNotificationService $pushService): RedirectResponse
     {
         $request->validate([
             'judul' => 'required|string|max:255',
@@ -25,6 +26,13 @@ class KomplainController extends Controller
             'isi' => $request->isi,
             'status' => 'pending',
         ]);
+
+        // PushNotification for Admin
+        $pushService->sendToAdmins(
+            title: 'Komplain Baru Masuk',
+            body: Auth::user()->name.': '.$request->judul,
+            url: route('dbkomplain')
+        );
 
         return back()->withSuccess('Komplain berhasil dikirim ke pemilik kos!');
     }

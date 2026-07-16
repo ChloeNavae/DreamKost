@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kamar;
 use App\Models\Transaksi;
 use App\Models\User;
+use App\Services\PushNotificationService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    public function storeTransaction(Request $request, Transaksi $transaksi)
+    public function storeTransaction(Request $request, Transaksi $transaksi, PushNotificationService $pushService)
     {
         // 1. Kalau user sudah punya kamar
         if (Kamar::where('owner_id', Auth::id())->exists()) {
@@ -43,6 +44,17 @@ class TransactionController extends Controller
         $transaksi->durasi = $request->duration;
 
         $transaksi->save();
+
+        // PushNotification for Admin
+        $namaUser = Auth::user()->name;
+        $jenisTransaksi = $transaksi->tipe === 'perpanjangan' ? 'perpanjangan sewa' : 'sewa kamar';
+ 
+        $pushService->sendToAdmins(
+            title: 'Transaksi Baru Masuk',
+            body: "{$namaUser} mengajukan {$jenisTransaksi} untuk kamar {$transaksi->no_kamar}.",
+            url: route('dbtransaksi')
+        );
+
         return redirect("/")->withSuccess('Sewa Dalam Proses, Silahkan Tunggu.');
     }
 
