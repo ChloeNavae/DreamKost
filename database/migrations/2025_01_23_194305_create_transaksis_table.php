@@ -18,6 +18,7 @@ return new class extends Migration
                 indexName: 'kamar_owner_id'
             )->cascadeOnDelete();
             $table->string('image');
+            $table->string('ktp')->nullable();
             $table->integer('no_kamar');
             $table->integer('durasi');
             $table->enum('jenis', ['sewa', 'perpanjangan'])->default('sewa');

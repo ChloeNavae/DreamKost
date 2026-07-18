@@ -8,6 +8,9 @@
                         Bukti Transaksi
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        KTP
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Owner
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -35,6 +38,13 @@
                             <img src="{{ asset($transaksi->image) }}" class="w-16 md:w-32 max-w-full max-h-full cursor-pointer hover:opacity-75 transition-opacity"
                                 alt="Bukti Transaksi"
                                 onclick="showModal('{{ asset($transaksi->image) }}')"> 
+                        </td>
+                        <td class="px-6 py-4">
+                            @if ($transaksi->ktp)
+                                <a href="{{ asset($transaksi->ktp) }}" target="_blank" class="text-blue-400 hover:underline">Lihat KTP</a>
+                            @else
+                                <span class="text-gray-500">-</span> {{-- transaksi tipe perpanjangan tidak punya KTP --}}
+                            @endif
                         </td>
                         <td class="px-6 py-4 font-semibold text-white">
                             {{ $transaksi->owner->name }}

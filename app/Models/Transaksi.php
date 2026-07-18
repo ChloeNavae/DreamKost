@@ -10,6 +10,7 @@ class Transaksi extends Model
     protected $fillable = [
         'owner_id',
         'image',
+        'ktp',
         'no_kamar',
         'durasi',
         'jenis',

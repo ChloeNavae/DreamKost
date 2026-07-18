@@ -73,6 +73,13 @@
                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" id="file_input_help">PNG, JPG atau JPEG (Maks. 2MB).</p>
                 </div>
 
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="ktp">Upload Foto KTP/Tanda Pengenal</label>
+                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                           aria-describedby="file_input_help" id="ktp" name="ktp" type="file" required accept="image/*">
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" id="file_input_help">Upload foto KTP/tanda pengenal yang jelas untuk verifikasi identitas.<br> PNG, JPG atau JPEG (Maks. 2MB).</p>
+                </div>
+
                 <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
 
                 <!-- Tombol Aksi -->

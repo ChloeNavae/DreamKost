@@ -29,17 +29,24 @@ class TransactionController extends Controller
         $request->validate([
             'duration' => 'required|numeric|min:1|max:12',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'ktp' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'no_kamar' => 'required|numeric',
         ]);
 
         // ubah nama img menjadi name_date_time
         $userName = User::where('id', Auth::id())->value('name');
-        $dateTime = now()->format('d-m-Y_H-i-s');;
+        $dateTime = now()->format('d-m-Y_H-i-s');
+        // Foto Bukti Transaksi
         $imageName = $userName.'_'.$dateTime.'.'.$request->image->extension();
         $request->image->move(public_path('bukti'), $imageName);
+        // Foto KTP
+        $ktpName = $userName.'_'.$dateTime.'.'.$request->ktp->extension();
+        $request->ktp->move(public_path('ktp'), $ktpName);
+        
         // $transaksi = new Transaksi();
         $transaksi->owner_id = Auth::id();
         $transaksi->image = 'bukti/'.$imageName;
+        $transaksi->ktp = 'ktp/'.$ktpName;
         $transaksi->no_kamar = $request->no_kamar;
         $transaksi->durasi = $request->duration;
 
