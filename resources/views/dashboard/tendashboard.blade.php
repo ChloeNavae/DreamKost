@@ -60,7 +60,7 @@
                             </div>
                             <div class="ml-3">
                                 <p class="text-xs text-yellow-700 dark:text-yellow-500">
-                                    Silakan transfer ke rekening <strong>BCA 1234567890 a.n Dream Kost</strong> sebesar <span id="displayArea" class="font-bold">Rp 0</span>
+                                    Silakan transfer ke rekening <strong>BCA 1234567890 a.n Dream Kost</strong> sebesar <span id="displayArea" class="font-bold">Rp 700.000</span>
                                 </p>
                             </div>
                             <!-- Hidden input to store total if needed by backend -->
